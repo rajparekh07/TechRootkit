@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/settings_header" >
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_srgb"
+            android:summary="@string/pref_srgb_summary"
+            android:title="@string/pref_srgb_title">
+        </SwitchPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about_header" >
+
+        <Preference android:key="about_version"
+            android:summary="@string/about_app_version_summary"
+            android:title="@string/about_app_version_title"/>
+        <Preference android:key="about_dev_name"
+            android:summary="@string/about_dev_summary"
+            android:title="@string/about_dev_title"/>
+        <Preference android:key="about_dev_email"
+            android:summary="@string/email_dev_summary"
+            android:title="@string/email_dev_title"/>
+        <Preference android:key="about_dev_xda"
+            android:summary="@string/xda_dev_summary"
+            android:title="@string/xda_dev_title"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
