@@ -19,7 +19,7 @@ public abstract class RootCommandExecutor
         String returnMessage = "";
         try
         {
-            ArrayList<String> commands = getCommandsToExecute();
+            ArrayList<String> commands = commandsToExecute;
             if (null != commands && commands.size() > 0)
             {
                 Process suProcess = Runtime.getRuntime().exec("su");
@@ -44,5 +44,11 @@ public abstract class RootCommandExecutor
         }
         return retval ? returnMessage : "Failed to get root";
     }
-    protected abstract ArrayList<String> getCommandsToExecute();
+    protected void clearListAndAdd(String command) {
+        commandsToExecute.clear();
+        commandsToExecute.add(command);
+    }
+    protected ArrayList<String> commandsToExecute = new ArrayList<String>();
+    public abstract String activate();
+    public abstract String deactivate();
 }

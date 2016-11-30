@@ -9,6 +9,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import rootkit.techsav.com.techrootkit.commands.SRGBCommand;
+import rootkit.techsav.com.techrootkit.listeners.CommandPreferenceChangeListener;
 import rootkit.techsav.com.techrootkit.utils.RootCommandExecutor;
 
 /**
@@ -17,50 +19,19 @@ import rootkit.techsav.com.techrootkit.utils.RootCommandExecutor;
 
 public class SettingsMainFragment extends PreferenceFragment
 {
-    private String sRGBCommandEnabler = "echo 1 > /sys/class/graphics/fb0/srgb";
-    private String sRGBCommandDisabler = "echo 0 > /sys/class/graphics/fb0/srgb";
-    private String sRGBValueGetter = "cat /sys/class/graphics/fb0/srgb";
-    private SwitchPreference srgbSwitch;
+    private SwitchPreference sRGBSwitch;
+    private SRGBCommand sRGBCommand;
     @Override
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference);
-        srgbSwitch = (SwitchPreference) findPreference("pref_srgb");
+        sRGBCommand = new SRGBCommand();
+        sRGBSwitch = (SwitchPreference) findPreference("pref_srgb");
         setListenersForPrefereneces();
     }
     private boolean setListenersForPrefereneces(){
-        srgbSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                boolean srgbModeEnabled = (boolean) o;
-                String command = srgbModeEnabled ? sRGBCommandEnabler : sRGBCommandDisabler;
-                Log.d("Root",command + " " + srgbModeEnabled);
-                executeCommandFor(command);
-                return true;
-            }
-        });
+        sRGBSwitch.setOnPreferenceChangeListener(new CommandPreferenceChangeListener(sRGBCommand));
         return true;
-    }
-    private boolean getValuesCurrently(){
-        srgbSwitch.setChecked(
-                executeCommandFor(sRGBValueGetter).equals("1")
-        );
-        return true;
-    }
-    private String executeCommandFor(final String... preference){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new RootCommandExecutor(
-                ) {
-                    @Override
-                    protected ArrayList<String> getCommandsToExecute() {
-                        return new ArrayList<String>(Arrays.asList(preference));
-                    }
-                }.execute();
-            }
-        }).start();
-        return "0";
     }
 }
