@@ -15,7 +15,7 @@ public abstract class RootCommandExecutor
 {
     public final String execute()
     {
-        boolean retval = false;
+        boolean retval = true;
         String returnMessage = "";
         try
         {
@@ -37,10 +37,12 @@ public abstract class RootCommandExecutor
         catch (IOException ex)
         {
             Log.d("ROOT", "Can't get root access");
+            retval = false;
         }
         catch (Exception ex)
         {
             Log.d("ROOT", "Error executing internal operation");
+            retval = false;
         }
         return retval ? returnMessage : "Failed to get root";
     }
